@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon index.js",
+    "test": "nodemon -r dotenv/config index.js",
     "start": "node index.js"
   },
   "repository": {
@@ -17,6 +17,7 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "dotenv": "^10.0.0",
     "nodemon": "^2.0.12"
   }
 }
