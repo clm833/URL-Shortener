@@ -1,12 +1,17 @@
-const { port } = require('./config/config');
+const { port, host } = require('./config/config');
 const express = require('express')
 const app = express()
 
-//ROUTES
-app.get('/', (req, res) => {
-  res.send('Hola CM')
-})
+// Parse incoming request body in JSON format.
+app.use(express.json({
+  extended: false
+})) 
 
+//Routes
+app.use('/api/url', require('./routes/url'));
+app.use('/', require('./routes/redirect'))
+
+//Listen for incoming requests
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Shortener app listening at http://${host}:${port}`)
 })
