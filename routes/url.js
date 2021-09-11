@@ -4,6 +4,10 @@ const shortid = require('shortid');
 const validUrl = require('valid-url');
 const { baseUrl } = require('../config/config');
 
+//import the Url database model
+const Url = require('../database/models/links');
+
+
 //express routes handler
 const router = express.Router();
 
@@ -25,18 +29,27 @@ router.post('/shortener', async (req, res) => {
 
     // check long url if valid using the validUrl.isUri method
     if (validUrl.isUri(longUrl)) {
-        let url = findLongUrl();
-        // si url existe, devuelve url
-        //si url no existe, guarda url y shortURL o urlCode, devuelve urlCode
+        try {
+            let url = await Url.findOne({
+                where: { longUrl }
+            });
+            if (url) {
+                res.json(url);
+            } else {
+                url = await Url.create({
+                    longUrl,
+                    shortUrl: `${baseUrl}/${urlCode}`,
+                    urlCode,
+                });
+                res.json(url);
+            }
+        }
+        catch (err) {
+            console.log(err)
+            res.status(500).json('SQL Error')
+        }
     } else {
         res.status(401).json('Invalid longUrl')
     }
-
-    res.send(`Long: ${longUrl} urlCode: ${urlCode}`);
 });
-
 module.exports = router;
-
-function findLongUrl(){
-    //do something
-};
