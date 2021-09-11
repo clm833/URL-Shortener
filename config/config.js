@@ -9,4 +9,6 @@ module.exports = {
   db_username: process.env.DB_USERNAME,
   db_password: process.env.DB_PASSWORD,
   db_table: process.env.DB_TABLE,
+
+  defaultUrl: process.env.DEFAULT_URL,
 };
